@@ -1,6 +1,7 @@
 from __future__ import division, unicode_literals
 from decimal import Decimal
 from warnings import warn
+import uuid
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -10,6 +11,7 @@ from django.db.models import Avg, Count, Sum
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext as _
 from model_utils.models import TimeStampedModel
+
 
 from . import app_settings
 
@@ -63,7 +65,7 @@ class Rating(models.Model):
     average = models.DecimalField(max_digits=6, decimal_places=3, default=Decimal(0.0))
 
     content_type = models.ForeignKey(ContentType, null=True, blank=True)
-    object_id = models.PositiveIntegerField(null=True, blank=True)
+    object_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     content_object = GenericForeignKey()
 
     objects = RatingManager()
